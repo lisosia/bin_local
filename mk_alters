@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+if ARGV.size < 2
+  puts "usage paramname unitname $(seq start step end)"
+end
+
+param = ARGV[0]
+unit = ARGV[1]
+
+for i in ARGV[ 2 .. -1 ]
+  puts ".alter"
+  puts ".param #{param} = #{i}#{unit}"
+end

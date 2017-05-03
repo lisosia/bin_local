@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import sys, os
+sys.path.append( os.path.expanduser('~/bin_local') )
+from io import StringIO
+import numpy as np
+from pylab import *
+import re
+from util import float_u
+
+from matplotlib import rc
+from matplotlib.ticker import FuncFormatter
+
+rc('font', **{'family':'serif','serif':['Palatino']})
+rc('text', usetex=True)
+
+files = sys.argv[1:]
+t = ""
+if sys.argv[1] == "-t":
+    t = sys.argv[2]
+    files = sys.argv[3:]
+
+ax = subplot(111)
+def x_fmt(x, pos):
+    return ('%.2f n' % (x * 1e9) )
+ax.xaxis.set_major_formatter(FuncFormatter(x_fmt))
+
+for f in files:
+    print f
+    tmp = np.loadtxt( f , unpack = False, delimiter="\t", converters = { 0: float_u } )
+    arr = tmp[ np.argsort( tmp[:,0] ) ]
+    a = np.array( [ e[0] for e in arr ] )
+    b = np.array( [ e[1] for e in arr ] )
+    #plot(a ,b , "o" )
+    slope = f.split(".")[-1]
+    # Be carefull if you want to flip X-axis data
+    plot( 1.0 * a , b , "o--", label= "slope = %s" % slope )
+
+plot( [-1e9,1e9], [64,64], "k--" )
+
+xlabel("Tclk[s]", fontsize=20)
+ylabel("count(max=128)", fontsize=20)
+# title( "count vs Tclk @" + r'$\  \sigma_{offset} = 12mV $')
+title( "count vs Tclk")
+
+#xlim(-20e-9, 20e-9)
+xlim(-15e-9, 15e-9)
+
+legend( loc="best")
+show()

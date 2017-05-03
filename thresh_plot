@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+vcom="500m"
+vdiffh="500m"
+
+for vcom in 500m; do
+for vdiffh in 500m ; do
+#for slope in 10 100 1k 10k 100k 1mega 10mega 100mega 1g 10g 100g; do
+for slope in 10g ; do
+# for f in $(ls r.$vcom.$vdiffh.$slope.*); do
+    #voff="${f##*.}"
+    printf "%s\t" $f
+    plot_voff_tclk.py "r.$vcom.$vdiffh.$slope."
+    #outfile="fit.$vcom.$vdiffh"
+    #printf "$slope\t" >> $outfile
+    #gauss_fit_center2 $f >> $outfile
+done; done; done; #done

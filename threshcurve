@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+vcom="500m"
+vdiffh="500m"
+
+for vcom in 500m; do
+for vdiffh in 500m ; do
+for slope in 10 100 1k 10k 100k 1mega 10mega 100mega 1g 10g 100g; do
+for _voff in $(seq -50 1 50); do
+    voff="${_voff}m"
+    f="r.$vcom.$vdiffh.$slope.${voff}"
+    out="curve.$slope"
+
+    printf "%s\t" $voff >> $out
+    get_thresh $f >> $out
+    #outfile="fit.$vcom.$vdiffh"
+    #printf "$slope\t" >> $outfile
+    #gauss_fit_center2 $f >> $outfile
+done; done; done; done

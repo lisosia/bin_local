@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# when, sim with trannoise
+
+lines=`wc -l ./alters | cut -d " " -f 1`
+n=`echo "$lines / 2" | bc`
+
+for i in $(seq 1 $n ); 
+do
+    # cat test.mt$i | load_hspice_mt2 |cut -f 4 | sort --general-numeric-sort|tail -1 1>&2; #check resolve time    
+    cat test.mt$i | load_hspice_mt2 |cut -f 5,6 | comp2;
+    printf  "\t%d\n"  $i ;
+done

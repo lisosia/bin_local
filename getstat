@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+arr = []
+linenum = 0
+
+while l=gets
+
+  linenum += 1
+  l.chomp
+  if l.empty? or /^\s+$/ === l
+    STDERR.puts "warning: empty line at line=#{linenum} "
+    next
+  end
+  
+  begin
+    f = Float( l )
+    arr << f
+  rescue e
+    raise "invalid line:<#{l}>"
+  end
+
+end
+
+def mean(arr)
+  arr.inject(0){|a,b| a+b} / arr.size.to_f
+end
+
+def median(array)
+  sorted = array.sort
+  len = sorted.length
+  (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+end
+def variance(x)
+  m = mean(x)
+  sum =0.0
+  x.each {|v| sum += (v-m)**2 }
+  sum/x.size
+end
+def sigma(x)
+  Math.sqrt(variance(x))
+end
+
+puts "#mean\tsigma\tmedian\tcount"
+puts "#{mean(arr)}\t#{sigma(arr)}\t#{median(arr)}\t#{arr.size}"
+

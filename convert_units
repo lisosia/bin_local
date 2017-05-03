@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+cat - | sed -e 's/k/e3/g' -e 's/mega/e6/g' -e 's/g/e9/g' -e 's/m/e-3/g' -e 's/u/e-6/g' -e 's/n/e-9/g'  -e 's/p/e-12/g' -e 's/f/e-15/g'

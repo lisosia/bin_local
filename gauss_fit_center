@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+from gauss_fit import gauss_fit, gaussian
+from util import float_u, get_deriv
+import sys
+import numpy as np
+from pylab import *
+
+# gauss_fit_center RESULT.tsv // RESULT cols = [time, count, total(consts), other]
+
+def main():
+    a,b,c,d = np.loadtxt( sys.argv[1] , unpack = True, delimiter= "\t", converters = { 0: float_u } )
+    assert (c[0] == c[1] and c[0] == c[-1])
+
+    dx,dy = get_deriv( a , b / c[0] )
+    for q,w in zip(dx, dy):
+        #print (q,w)
+        pass
+
+    #print dx, dy
+    param, info = gauss_fit( dx,dy )
+    mean ,sigma = param
+
+    plot( dx, dy, "ro")
+    
+    # plot( mean, 1. / (math.sqrt( 2 * math.pi ) * sigma ) , "gx")
+    xxx = np.linspace( np.min(a), np.max(a), len(a) * 100 )
+    plot( xxx, gaussian(xxx, 1. , mean,sigma ) , "k--" )
+    xlabel("Tdelay")
+    ylabel("diff of count")
+    title("gaussian fitting")
+    show()
+    print "%e\t%e" % (mean,sigma)
+    sys.stderr.write( str(info) )
+
+if __name__=="__main__":
+    main()

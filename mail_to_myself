@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cat <<EOF | sendmail -t
+From: sgymtik@gmail.com
+To: sgymtik@gmail.com
+Subject: ping
+
+ping
+${1}
+.
+EOF

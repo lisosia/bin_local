@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require "pry"
+
+file = "./test.printtr0"
+if ARGV.size > 0
+  file = ARGV[0]
+end
+
+samples = File.open(file, "r").read.split("-----------------------------------------------")
+samples.map! do |str|
+  ls = str.split("\n").reject{|l| l == ""}
+  raise unless /monte carlo index =\s+[0-9]+/ =~ ls[0]
+  seed = ls[0].split()[4].to_i
+  raise if seed == 0
+  head = ls[1].split
+  data = ls[2 .. -1].map!{|l| l.split}
+  STDERR.puts seed
+  {seed: seed,  head: head, data: data}
+end
+
+direc = "printtr_split"
+raise if Dir.exists?(direc)
+`mkdir #{direc}`
+
+for s in samples
+  File.open( "./#{direc}/#{s[:seed]}","w" ) do |f|
+    f.print "#"
+    f.puts s[:head].join("\t")
+    s[:data].each{|d| f.puts d.join("\t") }
+  end
+end

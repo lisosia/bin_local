@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+from gauss_integral_fit import gauss_int_fit, gauss_int
+from util import float_u, get_deriv
+import sys
+import numpy as np
+from pylab import *
+from scipy.special import erf
+
+# gauss_fit_center RESULT.tsv // RESULT cols = [time, count, total(consts), other]
+
+def main():
+    x,y,totals, d = np.loadtxt( sys.argv[1] , unpack = True, delimiter= "\t", converters = { 0: float_u } )
+    
+    tmp = np.unique( totals )
+    assert ( len(tmp) == 1 )
+    total = tmp[0]
+
+    param, info = gauss_int_fit( x, y / total )
+    mean ,sigma = param
+
+    plot( x, y, "ro")
+    
+    xxx = np.linspace( np.min(x), np.max(x), len(x) * 100 )
+    plot( xxx, gauss_int(xxx , mean,sigma ) * total , "k--" )
+
+    xlabel("Tdelay")
+    ylabel("diff of count")
+    title("gaussian fitting")
+    show()
+    print "%e\t%e" % (mean,sigma)
+    sys.stderr.write( str(info) )
+
+if __name__=="__main__":
+    main()

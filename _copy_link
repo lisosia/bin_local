@@ -1,0 +1,4 @@
+#! /usr/bin/bash
+
+cp -i $1 .
+ln -s $1 ./$(basename $1).link

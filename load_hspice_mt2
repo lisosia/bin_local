@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require "pry"
+
+skip = 2
+unit = 3
+
+ls = STDIN.readlines
+raise "change skip unit" unless (ls.size - skip) % unit == 0
+
+for i in 0...( (ls.size - skip) / unit )
+  next if i == 0
+  lines = ls[ skip+unit*i ... skip+unit*(i+1) ]
+  cols = lines.join("\t").split
+  puts cols.join("\t")
+end
+
+#binding.pry

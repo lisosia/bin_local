@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# sim with .param a=GAUSS without trannoise
+
+lines=`wc -l ./alters | cut -d " " -f 1`
+n=`echo "$lines / 2" | bc`
+
+for i in $(seq 1 $n ); 
+do
+    cat test.mt$i | skipn 4 |cut -f 4,5 | comp2;
+    printf  "\t%d\n"  $i ;
+done

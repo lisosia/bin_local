@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+c = 0
+total = 0
+while l = gets
+  next if l.empty? or l == "\n"
+  total += 1
+  a,b = l.split.map(&:to_f)
+  if a > b
+    c += 1
+  end
+end
+
+print "#{c}\t#{total}"

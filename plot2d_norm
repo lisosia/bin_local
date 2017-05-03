@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+#sys.path.append( os.path.expanduser('~/bin_local') )
+from io import StringIO
+import sys
+import numpy as np
+from pylab import *
+import re
+
+from util import float_u
+
+for f in sys.argv[1:]:
+    print f
+    tmp = np.loadtxt( f , unpack = False, delimiter="\t", converters = { 0: float_u } )
+    arr = tmp[ np.argsort( tmp[:,0] ) ]
+    a = np.array( [ e[0] for e in arr ] )
+    b = np.array( [ e[1] for e in arr ] )
+    plot(a ,b / np.max(b) , "o--" )
+
+#xlim( -100e-9 ,20e-9 )
+show()
