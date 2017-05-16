@@ -15,13 +15,14 @@ import matplotlib.pyplot as plt
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
-        
+
+# 微分
 def derivatives( x, f ):
     assert type( x[0] ) != int
     assert len(x) == len(f)
 
     # 念の為、uniform sampling に限定
-    assert np.unique( np.diff(x) ).size == 1, "invalid input array x: Not uniform sampling "
+    #assert np.unique( np.diff(x) ).size == 1, "invalid input array x: Not uniform sampling "
     
     x_f2 = 0.5*(x[1:] + x[:-1])
     return { "x": x_f2, "df": np.diff(f) / np.diff(x) }
@@ -40,11 +41,12 @@ def errfunc2gaussian( x, f):
         f = 1.0 - f
     
     r = derivatives( x, f )
-    x2, df = r["x"], r["df"]
+    x2, df = r["x"], r["df"] # now x2-df is gaussian-like
 
     # just calculate mean
     mean = np.sum( x2 * df ) / np.sum(df)
-    print( mean)
+    sigma = np.sqrt(   np.sum(  (x2-mean)**2 * df ) / np.sum(df)   )
+    print( mean, sigma )
     
 if __name__ == "__main__":
     inp = sys.stdin
