@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+def self.valid_float?(str)
+  Float(str) rescue false
+end
+
+files = ARGV
+result = nil
+STDERR.puts "averaging #{ files.size } files"
+for f in files
+  l = ` cut -f1 #{f} `.split.map do |e|
+    Float( e )
+  end
+  #STDERR.puts l.inspect
+  if result.nil?
+    result = l
+    next
+  end
+  raise "file:#{f},invalid-line-size:#{ l.size }" unless  result.size ==  l.size
+  for index in 0...(l.size)
+    result[index] += l[index]
+  end
+end
+
+ave = result.map{  |f| f /= ( files.size + 0.0 ) }
+puts ave.join("\n" )
