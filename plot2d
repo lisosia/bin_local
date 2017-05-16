@@ -11,9 +11,14 @@ from util import float_u
 
 parse = argparse.ArgumentParser()
 parse.add_argument( "files", nargs="+", help = "files to plot" )
+parse.add_argument( "--outfile",  help = "output png file name" )
 parse.add_argument( "--xlog", action='store_true', help = "plot with log x axis" )
 parse.add_argument( "--ylog", action='store_true', help = "plot with log y axis" )
 parse.add_argument( "--show", action='store_true', help = "show plot" )
+parse.add_argument( "--nolabel", action='store_true', help = "no label" )
+parse.add_argument( "--title", help = "title" )
+parse.add_argument( "--xlabel", help = "x label" )
+parse.add_argument( "--ylabel", help = "y label" )
 args = parse.parse_args()
 
 files = sys.argv[1:]
@@ -30,8 +35,11 @@ for f in args.files:
     b = np.array( [ e[1] for e in arr ] )
     #c = np.array( [ e[2] for e in arr ] )
 
-    #plot(a ,b , "o" )
-    plot(a , np.abs(b) , "o--", label= f )
+    if args.nolabel:
+        plot(a ,b , "o--" ) #, label= f )
+    else:
+        plot(a ,b , "o--" , label= f )
+    #plot(a , np.abs(b) , "o--", label= f )
     #plot(a , np.abs(c) , "o--", label= "sigma" )
 
 #plot( [-100,100], [64,64], "--" )
@@ -41,9 +49,14 @@ if args.xlog :
 if args.ylog :
     yscale("log")
 
-#xlabel("Tdelay[s]")
+if args.xlabel:
+    print args.xlabel
+    xlabel(args.xlabel )
+if args.ylabel:
+    ylabel(args.ylabel )
 #ylabel("count(max=64)")
-title(t)
+if args.title:
+    title( args.title )
 #title("count vs Tdelay   @Voff sigma = 1/3m")
 #xlim(-15e-9, 15e-9)
 #ylim( -1e-8, 1e-8)
@@ -52,4 +65,8 @@ legend( loc="best")
 
 if args.show :
     show()
-savefig( "slope-vs-tcross.png" )
+
+if args.outfile:
+    savefig( str( args.outfile ) )
+else:
+    savefig( "slope-vs-tcross.png" )
