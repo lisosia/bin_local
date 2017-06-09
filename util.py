@@ -8,7 +8,7 @@ import re
 
 def float_u(s):
 #    if re.match( r"^-?\d+\.?(\d+)?$|^-?\d+([eE][+-]?)", s ):
-    if re.match( r"^-?\d+(\.\d+)?([eE][+-]?\d+)?$", s ):
+    if re.match( r"^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$", s ):
         return np.float( s )
     elif re.match( r"\d+.*p$", s ):
         return np.float( s[0:-1] ) * 1.0e-12
