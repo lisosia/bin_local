@@ -36,7 +36,7 @@ for f in args.files:
     #c = np.array( [ e[2] for e in arr ] )
 
     if args.nolabel:
-        plot(a ,b , "o--" ) #, label= f )
+        plot(a ,b , "x" ) #, label= f )
     else:
         plot(a ,b , "o--" , label= f )
     #plot(a , np.abs(b) , "o--", label= f )
