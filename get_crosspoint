@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+# usage: ./<this> thresh [inputfile or stdin]
+# input: col1(increasing), col2
+
+thresh = Float( ARGV[0] )
+
+input = STDIN
+if ARGV[1]
+  input = File.open( ARGV[1] , "r")
+end
+
+c1, c2 = [], []
+while l = input.gets
+  e1, e2,_ = l.split.map{ |e| Float(e) }
+  c1 << e1
+  c2 << e2
+end
+
+
+raise unless c2[0]  < thresh
+raise unless c2[-1] > thresh
+raise unless ( c1[0] < c1[1] and c1[-2] < c1[-1] ) # 一応
+
+index = c2.find_index{ |e| e >= thresh }
+
+# linaer interpolation
+x1,x2 = c1[index -1 ], c1[index]
+y1,y2 = c2[index -1 ], c2[index]
+x_thresh = x1 + (x2-x1) * (thresh-y1) / (y2-y1)
+
+if ARGV.include? "--slope"
+  raise unless ( 5 < index and index + 5 < c1.size )
+  ii=5
+  slope = ( c2[index+ii] - c2[index-ii] + 0.0 ) / ( c1[index+ii] - c1[index-ii] )
+  puts slope
+  exit
+end
+puts x_thresh
+exit
