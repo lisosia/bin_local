@@ -19,9 +19,9 @@ while l = input.gets
 end
 
 
-raise unless c2[0]  < thresh
-raise unless c2[-1] > thresh
-raise unless ( c1[0] < c1[1] and c1[-2] < c1[-1] ) # 一応
+raise "shouldbe: c2[0]  < thresh" unless c2[0]  < thresh
+raise "shouldbe: c2[-1] > thresh" unless c2[-1] > thresh
+# raise unless ( c1[0] < c1[1] and c1[-2] < c1[-1] ) # 一応
 
 index = c2.find_index{ |e| e >= thresh }
 

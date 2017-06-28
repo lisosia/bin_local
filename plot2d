@@ -63,10 +63,11 @@ if args.title:
 
 legend( loc="best")
 
+figtmp=plt.gcf()
 if args.show :
     show()
 
 if args.outfile:
-    savefig( str( args.outfile ) )
+    figtmp.savefig( str( args.outfile ) )
 else:
     savefig( "slope-vs-tcross.png" )
