@@ -1,0 +1,22 @@
+#!/usr/bin/env bash 
+# input: 111 ... 1100110101000000 ... 000
+#  index:012...
+# input2 : header
+# out n-th line (==crosspoint)
+n=$( grep -e "[10]" $1 |  wc -l | cut -d" " -f1) 
+spre=$(grep "0" -m 1 -n $1 | sed -e 's/:.*//g' ) #1~n
+s=$(( $spre - 1 )) #0 ~ n-1
+tpre=$(tac $1 | grep "1" -m 1 -n | sed -e 's/:.*//g' ) # 1~n
+t=$(( $n - $tpre )) # 0 ~ n-1
+# echo $n $s $tpre $t
+
+# ii=( echo "scale=2; ( $s + $t ) / 2.0 " | bc  )
+
+cat $2 | ruby -e " 
+ls=STDIN.readlines; 
+i1 =  ${s}
+i2 = ${t}
+h1 = ( Float(ls[ i1 -1 ]) +  Float( ls[i1] ) ) /2.0
+h2 = ( Float(ls[ i2 -1 ]) +  Float( ls[i2] ) ) /2.0
+print (h1+h2)/2.0
+"

@@ -40,6 +40,6 @@ def sigma(x)
   Math.sqrt(variance(x))
 end
 
-puts "#mean\tsigma\tmedian\tcount"
+STDERR.puts "#mean\tsigma\tmedian\tcount"
 puts "#{mean(arr)}\t#{sigma(arr)}\t#{median(arr)}\t#{arr.size}"
 
