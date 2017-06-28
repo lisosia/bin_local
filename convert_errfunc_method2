@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 
 # http://stackoverflow.com/questions/18991408/python-finite-difference-functions
-# INPUT: 2 col := X Y
+# INPUT: 2 col := X Y   /// CDF
+
+# OUTPUT: calculated center (X-axis)
 
 # 統計　参考資料
 # https://oku.edu.mie-u.ac.jp/~okumura/stat/basics.html
 
 from __future__ import print_function
-import sys, math #,os
+import sys, math
 import numpy as np
-# from scipy import ndimage
-import matplotlib.pyplot as plt
+from scipy import ndimage
+# import matplotlib.pyplot as plt
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -42,10 +44,11 @@ def errfunc2gaussian( x, f):
     
     r = derivatives( x, f )
     x2, df = r["x"], r["df"] # now x2-df is gaussian-like
-
+    raise "TODO: trim by Y value; then fitting (by straight line?); then output center (y==0.5)"
     # just calculate mean
-    mean = np.sum( x2 * df ) / np.sum(df)
-    sigma = np.sqrt(   np.sum(  (x2-mean)**2 * df ) / np.sum(df)   )
+    # mean = np.sum( x2 * df ) / np.sum(df)
+    # sigma = np.sqrt(   np.sum(  (x2-mean)**2 * df ) / np.sum(df)   )
+    
     print( mean, sigma )
     return ( mean ,sigma )
     
@@ -56,13 +59,13 @@ if __name__ == "__main__":
     x, f = np.loadtxt( inp , unpack = True, delimiter= "\t" )
     mean, sigma = errfunc2gaussian( x,f )
 
-    if "--show" in sys.argv :
-        plt.plot( x, f, "o" )
-        xarr = np.array( x )
-        yy = map( lambda x: math.erf( - (x-mean)/sigma  ) / 2.0 + 0.5, xarr  )
-        plt.plot( xarr, yy, "r--" )
-        plt.show()
-    # r = derivatives( x, f )
-    # x2, df = r["x"], r["df"]
-    # for dx,df in zip(x2, df):
-    #     print "%f\t%f" % ( dx, df )
+    # if "--show" in sys.argv :
+    #     plt.plot( x, f, "o" )
+    #     xarr = np.array( x )
+    #     yy = map( lambda x: math.erf( - (x-mean)/sigma  ) / 2.0 + 0.5, xarr  )
+    #     plt.plot( xarr, yy, "r--" )
+    #     plt.show()
+    # # r = derivatives( x, f )
+    # # x2, df = r["x"], r["df"]
+    # # for dx,df in zip(x2, df):
+    # #     print "%f\t%f" % ( dx, df )
