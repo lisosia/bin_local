@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import sys
+import numpy as np
+import matplotlib.pyplot as plt
+
+# mu, sigma = 100, 15
+# x = mu + sigma * np.random.randn(10000)
+x = np.loadtxt( sys.argv[1] )
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+
+ax.hist(x, bins=150)
+ax.set_title('histogram')
+ax.set_xlabel('x')
+ax.set_ylabel('freq')
+fig.show()
+plt.show()

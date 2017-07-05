@@ -46,14 +46,14 @@ def errfunc2gaussian( x, f):
     # just calculate mean
     mean = np.sum( x2 * df ) / np.sum(df)
     sigma = np.sqrt(   np.sum(  (x2-mean)**2 * df ) / np.sum(df)   )
-    print( mean, sigma )
+    print( "%f\t%f" % (mean, sigma) )
     return ( mean ,sigma )
     
 if __name__ == "__main__":
     inp = sys.stdin
     if len(sys.argv) >= 2:
         inp = sys.argv[1]
-    x, f = np.loadtxt( inp , unpack = True, delimiter= "\t" )
+    x, f = np.loadtxt( inp , unpack = True ) #, delimiter= "\t" )
     mean, sigma = errfunc2gaussian( x,f )
 
     if "--show" in sys.argv :
@@ -61,10 +61,19 @@ if __name__ == "__main__":
         import math
         plt.plot( x, f, "o" )
         xarr = np.array( x )
-        yy = map( lambda x: math.erf( - (x-mean)/sigma  ) / 2.0 + 0.5, xarr  )
+        yy = map( lambda x: math.erf( - (x-mean)/ (sigma * math.sqrt(2) )  ) / 2.0 + 0.5, xarr  )
         plt.plot( xarr, yy, "r--" )
         plt.show()
-    # r = derivatives( x, f )
-    # x2, df = r["x"], r["df"]
-    # for dx,df in zip(x2, df):
-    #     print "%f\t%f" % ( dx, df )
+        
+        r = derivatives( x, 1.0 - f )
+        x2, df = r["x"], r["df"]
+        y_gau = (  1. / ( math.sqrt( 2 * math.pi ) * sigma ) )  * np.exp( - ( x2 -mean )**2 / (2 * sigma**2) ) / (x2[1]-x2[0])
+        print( x2[0:3])
+        print( y_gau[100] )
+        print( "mean=%f sigma=%f" % (mean , sigma) )
+        plt.plot( x2, df )
+        plt.plot( x2, y_gau )
+        print( max( y_gau ) )
+        plt.show()
+        # for dx,df in zip(x2, df):
+        #     print "%f\t%f" % ( dx, df )
