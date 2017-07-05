@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 # http://stackoverflow.com/questions/18991408/python-finite-difference-functions
-# INPUT: 2 col := X Y
+# INPUT : 2 col := X Y
+# OUTPUT: print mean<tab>sigma (get diff ,then get mean & sigma of the distribution)
 
 # 統計　参考資料
 # https://oku.edu.mie-u.ac.jp/~okumura/stat/basics.html
 
 from __future__ import print_function
-import sys, math #,os
+import sys #,os
 import numpy as np
 # from scipy import ndimage
-import matplotlib.pyplot as plt
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -57,6 +57,8 @@ if __name__ == "__main__":
     mean, sigma = errfunc2gaussian( x,f )
 
     if "--show" in sys.argv :
+        import matplotlib.pyplot as plt
+        import math
         plt.plot( x, f, "o" )
         xarr = np.array( x )
         yy = map( lambda x: math.erf( - (x-mean)/sigma  ) / 2.0 + 0.5, xarr  )
