@@ -19,6 +19,7 @@ parse.add_argument( "--nolabel", action='store_true', help = "no label" )
 parse.add_argument( "--title", help = "title" )
 parse.add_argument( "--xlabel", help = "x label" )
 parse.add_argument( "--ylabel", help = "y label" )
+parse.add_argument( "--cols",  help = "comma separated 2-number (x,y)" )
 args = parse.parse_args()
 
 files = sys.argv[1:]
@@ -33,6 +34,11 @@ for f in args.files:
     arr = tmp[ np.argsort( tmp[:,0] ) ]
     a = np.array( [ e[0] for e in arr ] )
     b = np.array( [ e[1] for e in arr ] )
+    if args.cols:
+        xx,yy = args.cols.split(",")
+        a = np.array( [ e[ int( xx ) ] for e in arr ] )
+        b = np.array( [ e[ int( yy ) ] for e in arr ] )
+        
     #c = np.array( [ e[2] for e in arr ] )
 
     if args.nolabel:
